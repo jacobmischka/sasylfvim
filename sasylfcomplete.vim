@@ -58,6 +58,7 @@ def parse(text):
     lines = text.split("\n")
 
     line_pattern = re.compile("^.*:(\d+):.*$")
+    final_pattern = re.compile("^.*warnings reported.$")
     desc_clause_pattern = re.compile("^DESCCLAUSE (.*)$")
     desc_rule_pattern = re.compile("^rule (.*)$")
     #case_start_pattern = re.compile("CASESTART")
@@ -69,6 +70,10 @@ def parse(text):
     is_rule = False
 
     for line in lines:
+        match = re.match(final_pattern, line)
+        if match:
+            continue
+
         match = re.match(line_pattern, line)
         if match:
             current_loc = match.group(1)
@@ -127,4 +132,97 @@ for case in cases:
 
 EOF
 
+endfunction
+
+function! CompleteSASyLF(findstart, base)
+  if a:findstart
+    " locate the start of the word
+    let line = getline('.')
+    let start = col('.') - 1
+    while start > 0 && line[start - 1] =~ '\a'
+      let start -= 1
+    endwhile
+    return start
+  else
+    " find months matching with "a:base"
+    let res = []
+    for m in split("Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec")
+      if m =~ '^' . a:base
+        call add(res, m)
+      endif
+    endfor
+    return res
+  endif
+endfunction
+
+function! CompleteSASyLF(findstart, base)
+    if a:findstart
+        " locate the start of the word
+        let line = getline('.')
+        let start = col('.') - 1
+        while start > 0 && line[start - 1] =~ '\a'
+            let start -= 1
+        endwhile
+        return start
+    else
+python << EOF
+import vim
+import re
+
+class Tag(object):
+    def __init__(self, value, filename, raw, kind):
+        self.value = value
+        self.filename = filename
+        self.raw = raw
+        self.kind = kind
+
+    def out(self):
+        return self.value
+
+f = open("tags")
+lines = f.readlines()
+taglist = []
+tags = {"t": [], "l": [], "r": []}
+
+for i in lines:
+    if not i.startswith("!"):
+        v, f, r, k = i.split("\t")
+        k = k[0]
+        tag = Tag(v, f, r, k)
+        taglist.append(tag)
+        tags[k].append(tag)
+
+current_column = int(vim.eval("col(\".\")"))
+current_line = vim.eval("getline(\".\")")
+head = current_line[:current_column]
+tail = current_line[current_column:]
+
+res = []
+
+kind = ""
+start = vim.eval("a:base")
+match = re.match(re.compile(".*\s+$"), head)
+if match:
+    match = re.match(re.compile(".*\W(\w+)\s+$"), head)
+    if match:
+        kind = match.group(1)[0]
+        #else:
+        #    res.append("m2")
+        #    match = re.match(re.compile(".*\W(\w+)\s+(\w+)$"), head)
+        #    if match:
+        #        kind = match.group(1)[0]
+        #        start = match.group(2)
+
+if tags.has_key(kind):
+    for tag in tags[kind]:
+        if tag.value.startswith(start):
+            res.append(tag.value)
+
+vim.command("let res = []")
+for i in res:
+    vim.command(("call add(res, \"%s\")") % i)
+#vim.command(("call add(res, \"%s\")") % tail)
+EOF
+        return res
+    endif
 endfunction
