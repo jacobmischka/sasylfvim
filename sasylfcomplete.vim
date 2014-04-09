@@ -10,6 +10,7 @@ import re
 
 fixno = int(vim.eval("fixno"))
 current_line = vim.eval("getline(\".\")")
+filename = vim.eval("bufname(\"%\")")
 #print "current line: " + current_line
 #print "fixno " + str(fixno) + "\n"
 
@@ -32,10 +33,19 @@ class MissingCase(object):
             s += "case "
 
         for line in self.case.split("\n"):
+            if line == "":
+                continue
+
             if self.is_rule and not line.startswith("-") and not line == "":
                 line = "_: " + line
-            line = "\t" + line
-            s += line + "\n"
+            if self.is_rule:
+                line = "\t" + line
+
+            #s += line + "\n"
+            if self.is_rule:
+                s += line + "\n"
+            else:
+                s += line + " "
 
         s += "is\n"
         s += "\tproof by unproved\n"
@@ -59,16 +69,12 @@ def parse(text):
     incase_rule = False
     is_rule = False
     current_case = ""
-    cases = []
     missing_cases = []
 
     for line in lines:
         match = re.match(case_end_pattern, line)
         if match:
             incase = False
-            #current_case += "\nis\n"
-            #current_case += "proof by unproved\n"
-            #current_case += "end case\n"
             missing_cases.append(MissingCase(current_case, lineno, is_rule))
             current_case = ""
             continue
@@ -77,18 +83,14 @@ def parse(text):
             if line.startswith("-"):
                 is_rule = True
 
-            #if not line.startswith("-") and not line == "":
-            #    line = ": " + line
-
-            current_case += "\n" + line
-            cases[-1] += "\n" + line
+            if line != "":
+                current_case += line + "\n"
             continue
 
         match = re.match(case_start_pattern, line)
         if match:
             incase = True
             is_rule = False
-            cases.append("")
             continue
 
         match = re.match(line_pattern, line)
@@ -109,7 +111,7 @@ def parse(text):
     return missing_cases
 
 
-filename = "sample.slf"
+#filename = "sample.slf"
 process = subprocess.Popen(["sasylf", "--LF", filename],
                            stdout=subprocess.PIPE,
                            stderr=subprocess.PIPE)
