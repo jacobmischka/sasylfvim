@@ -59,57 +59,45 @@ def parse(text):
 
     line_pattern = re.compile("^.*:(\d+):.*$")
     desc_clause_pattern = re.compile("^DESCCLAUSE (.*)$")
-    desc_rule_pattern = re.compile("^DESCRULE (.*)$")
-    case_start_pattern = re.compile("CASESTART")
-    case_rule_start_pattern = re.compile("CASESTART")
-    case_end_pattern = re.compile("CASEEND")
+    desc_rule_pattern = re.compile("^rule (.*)$")
+    #case_start_pattern = re.compile("CASESTART")
+    case_end_pattern = re.compile("^$")
 
-    lineno = 0
-    incase = False
-    incase_rule = False
-    is_rule = False
-    current_case = ""
     missing_cases = []
+    current_loc = -1
+    current_case = []
+    is_rule = False
 
     for line in lines:
-        match = re.match(case_end_pattern, line)
-        if match:
-            incase = False
-            missing_cases.append(MissingCase(current_case, lineno, is_rule))
-            current_case = ""
-            continue
-
-        if incase:
-            if line.startswith("-"):
-                is_rule = True
-
-            if line != "":
-                current_case += line + "\n"
-            continue
-
-        match = re.match(case_start_pattern, line)
-        if match:
-            incase = True
-            is_rule = False
-            continue
-
         match = re.match(line_pattern, line)
         if match:
-            lineno = match.group(1)
+            current_loc = match.group(1)
+            is_rule = False
+            current_case = []
             continue
 
         match = re.match(desc_rule_pattern, line)
         if match:
-            desc = match.group(1)
+            is_rule = True
             continue
 
-        match = re.match(desc_clause_pattern, line)
+        match = re.match(case_end_pattern, line)
         if match:
-            desc = match.group(1)
+            if is_rule and current_case != []:
+                missing_cases.append(MissingCase("\n".join(current_case), current_loc, is_rule))
+            elif len(current_case) > 1:
+                #current_case = [i for i in current_case if i == ""]
+                l = len(current_case)
+                for c in current_case[l/2:]:
+                    missing_cases.append(MissingCase(c, current_loc, is_rule))
+
+            current_case = []
             continue
+
+        # else
+        current_case.append(line)
 
     return missing_cases
-
 
 #filename = "sample.slf"
 process = subprocess.Popen(["sasylf", "--LF", filename],
