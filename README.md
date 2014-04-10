@@ -31,9 +31,9 @@ into the main vimrc file.
 The plugin offers various features, described below.
 
 ### Syntax Highlighting
-Syntax highlighting can be enabled by using ```vim :syntax on``` and ```vim
-:set filetype=sasylf``` (the latter can be done automatically using the
-autocommand from above).
+Syntax highlighting can be enabled by using ```:syntax on``` and ```:set
+filetype=sasylf``` (the latter can be done automatically using the autocommand
+from above).
 
 ### Inserting Missing Rules
 The file after/ftplugin/sasylf.vim defines a function SASyLFComplete(), which
@@ -94,7 +94,7 @@ that start with `gt-`.
 In addition to proposing the names, the function also provides the rule, lemma,
 or theorem statement itself in the preview buffer. In order for the preview
 buffer to appear, one needs to set the corresponding completeopt value with
-`vim :set completeopt+=preview`.
+`:set completeopt+=preview`.
 
 ## References
 - [1] http://www.cs.cmu.edu/~aldrich/SASyLF/
