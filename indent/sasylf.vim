@@ -1,10 +1,10 @@
-"if exists("b:did_indent")
-" finish
-"endif
-"let b:did_indent = 1
-
 " author: Claudio Corrodi <corrodi.claudio@gmail.com>
 " notes: adapted from indent/ocaml.vim found in the vim source distribution
+
+if exists("b:did_indent")
+ finish
+endif
+let b:did_indent = 1
 
 setlocal indentexpr=GetSASyLFIndent()
 setlocal indentkeys=o,=end,=is

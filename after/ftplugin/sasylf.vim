@@ -1,5 +1,6 @@
-function! SASyLFComplete()
+" author: Claudio Corrodi <corrodi.claudio@gmail.com>
 
+function! SASyLFComplete()
 let fixno=line(".")
 let theline=getline(".")
 
@@ -11,8 +12,6 @@ import re
 fixno = int(vim.eval("fixno"))
 current_line = vim.eval("getline(\".\")")
 filename = vim.eval("bufname(\"%\")")
-#print "current line: " + current_line
-#print "fixno " + str(fixno) + "\n"
 
 class MissingCase(object):
     def __init__(self, case, lineno, is_rule):
@@ -54,14 +53,12 @@ class MissingCase(object):
         return s.split("\n")
 
 def parse(text):
-    #print("Parsing text.\n")
     lines = text.split("\n")
 
     line_pattern = re.compile("^.*:(\d+):.*$")
     final_pattern = re.compile("^.*warnings reported.$")
     desc_clause_pattern = re.compile("^DESCCLAUSE (.*)$")
     desc_rule_pattern = re.compile("^rule (.*)$")
-    #case_start_pattern = re.compile("CASESTART")
     case_end_pattern = re.compile("^$")
 
     missing_cases = []
@@ -89,9 +86,9 @@ def parse(text):
         match = re.match(case_end_pattern, line)
         if match:
             if is_rule and current_case != []:
-                missing_cases.append(MissingCase("\n".join(current_case), current_loc, is_rule))
+                missing_cases.append(MissingCase("\n".join(current_case),
+                                                 current_loc, is_rule))
             elif len(current_case) > 1:
-                #current_case = [i for i in current_case if i == ""]
                 l = len(current_case)
                 for c in current_case[l/2:]:
                     missing_cases.append(MissingCase(c, current_loc, is_rule))
@@ -99,12 +96,10 @@ def parse(text):
             current_case = []
             continue
 
-        # else
         current_case.append(line)
 
     return missing_cases
 
-#filename = "sample.slf"
 process = subprocess.Popen(["sasylf", "--LF", filename],
                            stdout=subprocess.PIPE,
                            stderr=subprocess.PIPE)
@@ -116,7 +111,6 @@ def indent(data, ind):
     return [ind + "\t" + i for i in data]
 
 def getindent():
-    #print "finding indent for line:\n\"" + current_line + "\""
     match = re.match(re.compile("^([\s]*)"), current_line)
     if match:
         return match.group(1)
@@ -126,33 +120,10 @@ def getindent():
 for case in cases:
     if int(case.lineno) == fixno:
         lineno = int(case.lineno)
-        data = case.to_insert() #case.case.split("\n")
+        data = case.to_insert()
         data = indent(data, getindent())
         vim.current.buffer[lineno:lineno] = data
-
 EOF
-
-endfunction
-
-function! CompleteSASyLF(findstart, base)
-  if a:findstart
-    " locate the start of the word
-    let line = getline('.')
-    let start = col('.') - 1
-    while start > 0 && line[start - 1] =~ '\a'
-      let start -= 1
-    endwhile
-    return start
-  else
-    " find months matching with "a:base"
-    let res = []
-    for m in split("Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec")
-      if m =~ '^' . a:base
-        call add(res, m)
-      endif
-    endfor
-    return res
-  endif
 endfunction
 
 function! CompleteSASyLF(findstart, base)
@@ -188,24 +159,10 @@ class Tag(object):
     def to_append(self):
         d = {
             "word": self.value,
-            #"info": "some info text",
-            #"menu": "more menu text"
             }
         if self.info:
             d["info"] = self.info
         return d
-
-#f = open("tags")
-#lines = f.readlines()
-#taglist = []
-#tags = {"t": [], "l": [], "r": []}
-#for i in lines:
-#    if not i.startswith("!"):
-#        v, f, r, k = i.split("\t")
-#        k = k[0]
-#        tag = Tag(v, f, r, k)
-#        taglist.append(tag)
-#        tags[k].append(tag)
 
 f = open(vim.eval("bufname(\"%\")"))
 lines = f.readlines()

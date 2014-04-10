@@ -1,3 +1,14 @@
+" author: Claudio Corrodi <corrodi.claudio@gmail.com>
+" notes: This file contains keybindings for some characters often used in
+" SASyLF proofs (and in particular, in the course on Type Systems by Prof.
+" Boyland).
+" notes: This file contains a few keybindings to use this plugin. In
+" particular, f5 allows running SASyLF (the quickfix buffer can then show the
+" errors / output, and one can cycle through the errors), and f3 for adding
+" missing cases on the current line (e.g. if the cursor is on a "case analysis
+" by d:" line with missing cases, only the cases for this case analysis are
+" inserted).
+
 imap <buffer> <leader>g Γ
 imap <buffer> <leader>t τ
 imap <buffer> <leader>= ≠
@@ -27,23 +38,6 @@ imap <buffer> <leader>p →
 imap <buffer> <leader>L ⇉
 imap <buffer> <leader>m µ
 
-setlocal makeprg=sasylf\ %
-
-" autocmd FileType qf wincmd J
-" nmap <f5> :silent make\|redraw!\|copen\|wincmd t\|<cr><c-w>k
-" nmap <f5> :silent make\|redraw!\|cfirst\|<cr><c-w>k
-" nmap <f5> :silent make\|redraw!\|<cr><c-w>k
-nmap <f5> :silent make!\|redraw!\|<cr>
-nmap <f3> :call SASyLFComplete()<cr>
-" nmap <f5> :silent make\|redraw!\|copen\|<cr>
-
-nmap <leader>] :cfirst<cr>
-nmap <leader><leader> :cnext<cr>
-
 setlocal formatoptions+=ro
-
-setlocal ts=2 sw=2 sts=2
-
-setlocal tw=79
-
-set omnifunc=CompleteSASyLF
+setlocal makeprg=sasylf\ %
+setlocal omnifunc=CompleteSASyLF
