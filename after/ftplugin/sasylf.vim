@@ -167,8 +167,8 @@ class Tag(object):
 f = open(vim.eval("bufname(\"%\")"))
 lines = f.readlines()
 
-thm_pattern = re.compile("^theorem\s+(.+)\s*:.*$")
-lemma_pattern = re.compile("^lemma\s+(.+)\s*:.*$")
+thm_pattern = re.compile("^(t)heorem\s+(.+)\s*:.*$")
+lemma_pattern = re.compile("^(l)emma\s+(.+)\s*:.*$")
 rule_pattern = re.compile("^-+\s+([^\s]+).*$")
 info_end_pattern = re.compile("^.*\.\s+$")
 empty_pattern = re.compile("^\s*$")
@@ -200,10 +200,10 @@ for line in lines:
         else:
             first = False
 
-        last_value = match.group(1)
+        last_value = match.group(2)
         last_fn = "sample.slf"
         last_raw = ""
-        last_kind = "t"
+        last_kind = match.group(1)
         last_info = ""
         in_info = True
         in_info_first = True
