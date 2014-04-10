@@ -7,6 +7,11 @@ language [1]. Features include inserting missing cases, omnicompleting rule,
 theorem, and lemma names (with preview of the rule or lemma / theorem
 statement), indenting, and syntax highlighting.
 
+## Requirements
+The plugin has been tested using vim 7.4.179. Since the completion functions
+are implemented in python, vim must have the "+python" option (which can be
+checked using `:version`, or `:echo has('python')`).
+
 ## Installation
 Simply copy the contents of this repository (excluding README.md) to your vim
 configuration directory (usually ~/.vim/), though I using a plugin like
