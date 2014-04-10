@@ -12,6 +12,8 @@ The plugin has been tested using vim 7.4.179. Since the completion functions
 are implemented in python, vim must have the "+python" option (which can be
 checked using `:version`, or `:echo has('python')`).
 
+In addition, the SASyLF executable must be callable using `!sasylf` in vim.
+
 ## Installation
 Simply copy the contents of this repository (excluding README.md) to your vim
 configuration directory (usually ~/.vim/), though I using a plugin like
