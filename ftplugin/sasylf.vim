@@ -2,12 +2,6 @@
 " notes: This file contains keybindings for some characters often used in
 " SASyLF proofs (and in particular, in the course on Type Systems by Prof.
 " Boyland).
-" notes: This file contains a few keybindings to use this plugin. In
-" particular, f5 allows running SASyLF (the quickfix buffer can then show the
-" errors / output, and one can cycle through the errors), and f3 for adding
-" missing cases on the current line (e.g. if the cursor is on a "case analysis
-" by d:" line with missing cases, only the cases for this case analysis are
-" inserted).
 
 imap <buffer> <leader>g Γ
 imap <buffer> <leader>t τ
