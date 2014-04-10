@@ -8,6 +8,7 @@ let b:did_indent = 1
 
 setlocal indentexpr=GetSASyLFIndent()
 setlocal indentkeys=o,=end,=end.,=end\ ,=is,=is.,=is\ 
+setlocal comments=sr:/*,mbf:*,ex:*/,://,b:#,:%,:XCOMM,n:>,fb:-
 
 function! GetSASyLFIndent()
 	" At the start of the file use zero indent.
