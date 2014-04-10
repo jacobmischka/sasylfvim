@@ -7,7 +7,7 @@ endif
 let b:did_indent = 1
 
 setlocal indentexpr=GetSASyLFIndent()
-setlocal indentkeys=o,=end,=is
+setlocal indentkeys=o,=end,=end.,=end\ ,=is,=is.,=is\ 
 
 function! GetSASyLFIndent()
 	" At the start of the file use zero indent.
@@ -37,8 +37,13 @@ function! GetSASyLFIndent()
 	end
 
 	" Unindent if line with "end" or "is" is written.
-	if line =~ 'end\|is'
+	if line =~ 'end$\|is$'
 		let ind = ind - &sw
+		return ind
+	end
+
+	if line =~ 'end.$\|is.$'
+		let ind = ind + &sw
 		return ind
 	end
 
