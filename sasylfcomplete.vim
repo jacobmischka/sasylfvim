@@ -207,7 +207,7 @@ class Tag(object):
 #        taglist.append(tag)
 #        tags[k].append(tag)
 
-f = open("sample.slf")
+f = open(vim.eval("bufname(\"%\")"))
 lines = f.readlines()
 
 thm_pattern = re.compile("^theorem\s+(.+)\s*:.*$")
