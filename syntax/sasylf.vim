@@ -19,14 +19,14 @@ syn keyword sConditional forall exists by on
 
 syn match sComment /\/\/.*/
 syn match sBar /\-\-\-\-.*$/
-syn match sDerivation /[a-zA-Z_]\([a-zA-Z0-9_-]\|'\| \)*:/
+syn match sLabel /[a-zA-Z_]\([a-zA-Z0-9_-]\|'\)*\s*:/
 syn region sCommentL start="/\*" end="\*/" extend
 
 
 hi def link sKeyword Statement
 hi def link sConditional Conditional
 hi def link sBar Special
-hi def link sDerivation Identifier
+hi def link sLabel Identifier
 hi def link sComment Comment
 hi def link sCommentL Comment
 let b:current_syntax = "sasylf"
