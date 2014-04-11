@@ -56,6 +56,7 @@ def parse(text):
     lines = text.split("\n")
 
     single_rule_pattern = re.compile(".*must provide a case for rule (.*)$")
+    single_case_pattern = re.compile(".*must provide a case for (.+)$")
     line_pattern = re.compile("^.*:(\d+):.*$")
     final_pattern = re.compile("^.*warnings reported.$")
     desc_clause_pattern = re.compile("^DESCCLAUSE (.*)$")
@@ -99,6 +100,8 @@ def parse(text):
                 l = len(current_case)
                 for c in current_case[l/2:]:
                     missing_cases.append(MissingCase(c, current_loc, is_rule))
+            elif len(current_case) == 1:
+                missing_cases.append(MissingCase(current_case[0], current_loc, is_rule))
 
             current_case = []
             continue
