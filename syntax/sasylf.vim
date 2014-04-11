@@ -13,7 +13,7 @@ if exists("b:current_syntax")
 		finish
 endif
 
-syn keyword sKeyword terminals syntax judgment assumes lemma theorem induction analysis hypothesis rule end is case unproved proof solve
+syn keyword sKeyword terminals syntax judgment assumes lemma theorem induction analysis hypothesis rule end is case unproved proof solve and
 syn keyword sConditional forall exists by on
 
 
