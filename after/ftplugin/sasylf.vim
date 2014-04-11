@@ -1,5 +1,10 @@
 " author: Claudio Corrodi <corrodi.claudio@gmail.com>
 
+if exists("loaded_sasylfvim")
+	finish
+endif
+let loaded_sasylfvim=1
+
 function! SASyLFComplete()
 let fixno=line(".")
 let theline=getline(".")
