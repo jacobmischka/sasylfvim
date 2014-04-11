@@ -156,7 +156,8 @@ import re
 
 class Tag(object):
     def __init__(self, value, filename, raw="", kind="", info=""):
-        self.value = value
+        #self.value = value
+        self.value = re.sub(re.compile("\s+$"), "", value)
         self.filename = filename
         self.raw = raw
         self.kind = kind
@@ -181,8 +182,8 @@ class Tag(object):
 f = open(vim.eval("bufname(\"%\")"))
 lines = f.readlines()
 
-thm_pattern = re.compile("^(t)heorem\s+(.+)\s*:.*$")
-lemma_pattern = re.compile("^(l)emma\s+(.+)\s*:.*$")
+thm_pattern = re.compile("^(theorem)\s+(.+)\s*:.*$")
+lemma_pattern = re.compile("^(lemma)\s+(.+)\s*:.*$")
 rule_pattern = re.compile("^-+\s+([^\s]+).*$")
 info_end_pattern = re.compile("^.*\.\s+$")
 empty_pattern = re.compile("^\s*$")
@@ -217,8 +218,8 @@ for line in lines:
         last_value = match.group(2)
         last_fn = "sample.slf"
         last_raw = ""
-        last_kind = match.group(1)
-        last_info = ""
+        last_kind = match.group(1)[0]
+        last_info = match.group(1) + " " + match.group(2) + ":\n"
         in_info = True
         in_info_first = True
 
