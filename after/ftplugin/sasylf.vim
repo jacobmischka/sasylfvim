@@ -284,12 +284,15 @@ if match:
 if tags.has_key(kind):
     for tag in tags[kind]:
         if tag.value.startswith(start):
-            res.append(tag.to_append())
+            res.append(tag)
+            #res.append(tag.to_append())
+
+res.sort(lambda x, y: cmp(x.value, y.value))
 
 vim.command("let res = []")
 for i in res:
     vim.command(("let tmp = {}"))
-    for k, v in i.items():
+    for k, v in i.to_append().items():
         vim.command("let tmp.%s = \"%s\"" % (k, v))
     vim.command("call add(res, tmp)")
 EOF
