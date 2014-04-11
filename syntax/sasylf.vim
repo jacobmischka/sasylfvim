@@ -30,5 +30,3 @@ hi def link sLabel Identifier
 hi def link sComment Comment
 hi def link sCommentL Comment
 let b:current_syntax = "sasylf"
-
-" vim: ts=4
