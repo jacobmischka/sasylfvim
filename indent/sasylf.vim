@@ -7,7 +7,7 @@ endif
 let b:did_indent = 1
 
 setlocal indentexpr=GetSASyLFIndent()
-setlocal indentkeys=o,=end,=end.,=end\ ,=lemma,=analysis,=induction,=is,=is.,=is\ 
+setlocal indentkeys=o,=end,=end.,=end\ ,=lemma,=analysis,=analysis\ ,=induction,=induction\ =is,=is.,=is\ 
 setlocal comments=sr:/*,mbf:*,ex:*/,://,b:#,:%,:XCOMM,n:>,fb:-
 
 function! GetSASyLFIndent()
@@ -43,7 +43,7 @@ function! GetSASyLFIndent()
 		return ind
 	end
 
-	if line =~ 'end.$\|is.$'
+	if line =~ 'end\( \(lemma\|case analysis\|induction\)\)\?.\|is.$'
 		let ind = ind + &sw
 		return ind
 	end
