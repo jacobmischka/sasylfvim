@@ -55,6 +55,7 @@ class MissingCase(object):
 def parse(text):
     lines = text.split("\n")
 
+    single_rule_pattern = re.compile(".*must provide a case for rule (.*)$")
     line_pattern = re.compile("^.*:(\d+):.*$")
     final_pattern = re.compile("^.*warnings reported.$")
     desc_clause_pattern = re.compile("^DESCCLAUSE (.*)$")
@@ -74,8 +75,14 @@ def parse(text):
         match = re.match(line_pattern, line)
         if match:
             current_loc = match.group(1)
-            is_rule = False
             current_case = []
+
+            m = re.match(single_rule_pattern, line)
+            if m:
+                is_rule = True
+            else:
+                is_rule = False
+
             continue
 
         match = re.match(desc_rule_pattern, line)
@@ -117,11 +124,15 @@ def getindent():
     else:
         return ""
 
+first = True
 for case in cases:
     if int(case.lineno) == fixno:
         lineno = int(case.lineno)
         data = case.to_insert()
         data = indent(data, getindent())
+        if first:
+            first = False
+            data = data[:-1]
         vim.current.buffer[lineno:lineno] = data
 EOF
 endfunction
