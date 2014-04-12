@@ -210,11 +210,13 @@ in_info = False
 tags = {"t": [], "l": [], "r": []}
 
 idx = 0
+has_tags = False
 for line in lines:
     match = re.match(thm_pattern, line)
     if not match:
         match = re.match(lemma_pattern, line)
     if match:
+        has_tags = True
         if not first:
             tag = Tag(last_value,
                       last_fn,
@@ -239,7 +241,7 @@ for line in lines:
         first = True
         before = []
         i = idx - 1
-        while idx >= 0:
+        while i >= 0:
             if not re.match(empty_pattern, lines[i]):
                 before.append(lines[i][:-1])
             else:
@@ -249,7 +251,7 @@ for line in lines:
 
         after = []
         i = idx + 1
-        while idx < len(lines):
+        while i < len(lines):
             if not re.match(empty_pattern, lines[i]):
                 after.append(lines[i][:-1])
             else:
@@ -277,6 +279,15 @@ for line in lines:
             in_info = False
 
     idx += 1
+
+if has_tags:
+    tag = Tag(last_value,
+              last_fn,
+              last_raw,
+              last_kind,
+              last_info)
+    if tags.has_key(last_kind):
+        tags[last_kind].append(tag)
 
 current_column = int(vim.eval("col(\".\")"))
 current_line = vim.eval("getline(\".\")")
