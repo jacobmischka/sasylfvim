@@ -18,13 +18,6 @@ nmap <f5> :silent make!\|redraw!\|<cr>
 nmap <leader>] :cfirst<cr>
 nmap <leader><leader> :cnext<cr>
 
-" This is for the tagbar plugin and tells it which tags to display.
-let g:tagbar_type_sasylf = {'ctagstype' : 'sasylf', 'kinds' : [
-			\'r:rules',
-			\'l:lemmas',
-			\'t:theorems'
-			\], 'sort' : 0 }
-
 " See 'formatoptions' for details.
 setlocal formatoptions+=ro
 
@@ -64,6 +57,13 @@ imap <buffer> <leader>J ⊥
 imap <buffer> <leader>p →
 imap <buffer> <leader>L ⇉
 imap <buffer> <leader>m µ
+
+" This is for the tagbar plugin and tells it which tags to display.
+let g:tagbar_type_sasylf = {'ctagstype' : 'sasylf', 'kinds' : [
+			\'r:rules',
+			\'l:lemmas',
+			\'t:theorems'
+			\], 'sort' : 0 }
 
 " The following lines are in my ~/.ctags file in order to generate tags for
 " rules, lemmas, and theorems.

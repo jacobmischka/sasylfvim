@@ -5,6 +5,9 @@ if exists("loaded_sasylfvim")
 endif
 let loaded_sasylfvim=1
 
+" include "-" (dash), since tags can contain them
+setlocal iskeyword=@,48-57,_,192-255,-
+
 function! SASyLFComplete()
 let fixno=line(".")
 let theline=getline(".")
