@@ -38,7 +38,7 @@ filetype=sasylf``` (the latter can be done automatically using the autocommand
 from above).
 
 ### Inserting Missing Rules
-The file after/ftplugin/sasylf.vim defines a function SASyLFComplete(), which
+The file ftplugin/sasylf.vim defines a function SASyLFComplete(), which
 inserts missing rules into a file. The function inserts only the missing rules
 that were reported for the line number matching the current line number. For
 example, consider the sasylf output of `sasylf --LF <a_file>`:
@@ -79,7 +79,7 @@ nmap <f3> :call SASyLFComplete()<cr>
 ```
 
 ### Omnicompletion of Theorem / Rule / Lemma Names
-The file after/ftplugin/sasylf.vim also defines a omnicomplete function
+The file ftplugin/sasylf.vim also defines a omnicomplete function
 SASyLFComplete. Currently, it allows completing rule, lemma, and theorem names.
 By using CTRL-X CTRL-O (see `:he omnifunc`), names are suggested based on the
 previous word and the current word. For example, if we are inserting at the end
@@ -97,6 +97,15 @@ In addition to proposing the names, the function also provides the rule, lemma,
 or theorem statement itself in the preview buffer. In order for the preview
 buffer to appear, one needs to set the corresponding completeopt value with
 `:set completeopt+=preview`.
+
+### Sample Configuration
+The file sasylf.sample.vim contains sample settings related to sasylf, similar
+to what I am using. Besides keybindings for common unicode characters used in
+proofs, it also sets keys for running the omnicompletion and cycling through
+quickfix entries. Additionally, regular expressions for exuberant ctags are
+included in comments at the end to show a simple way to generate tags for
+SASyLF (which can then be used  by vims tagging facilities, see `:he tags`,
+e.g. to jump to a definition using CTRL+]).
 
 ## References
 - [1] http://www.cs.cmu.edu/~aldrich/SASyLF/
