@@ -190,8 +190,7 @@ class Tag(object):
             d["info"] = self.info
         return d
 
-f = open(vim.eval("bufname(\"%\")"))
-lines = f.readlines()
+lines = vim.current.buffer
 
 thm_pattern = re.compile("^(theorem)\s+(.+)\s*:.*$")
 lemma_pattern = re.compile("^(lemma)\s+(.+)\s*:.*$")
