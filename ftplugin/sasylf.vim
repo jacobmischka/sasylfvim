@@ -8,6 +8,9 @@ let loaded_sasylfvim=1
 " include "-" (dash), since tags can contain them
 setlocal iskeyword=@,48-57,_,192-255,-
 
+" set errorformat to correctly parse the output (useful for quickfix)
+set errorformat=%f:%l:\ %m
+
 function! SASyLFComplete()
 let fixno=line(".")
 let theline=getline(".")
