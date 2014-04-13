@@ -8,6 +8,9 @@ let loaded_sasylfvim=1
 " include "-" (dash), since tags can contain them
 setlocal iskeyword=@,48-57,_,192-255,-
 
+" set errorformat to correctly parse the output (useful for quickfix)
+set errorformat=%f:%l:\ %m
+
 function! SASyLFComplete()
 let fixno=line(".")
 let theline=getline(".")
@@ -187,8 +190,7 @@ class Tag(object):
             d["info"] = self.info
         return d
 
-f = open(vim.eval("bufname(\"%\")"))
-lines = f.readlines()
+lines = vim.current.buffer
 
 thm_pattern = re.compile("^(theorem)\s+(.+)\s*:.*$")
 lemma_pattern = re.compile("^(lemma)\s+(.+)\s*:.*$")
@@ -207,11 +209,13 @@ in_info = False
 tags = {"t": [], "l": [], "r": []}
 
 idx = 0
+has_tags = False
 for line in lines:
     match = re.match(thm_pattern, line)
     if not match:
         match = re.match(lemma_pattern, line)
     if match:
+        has_tags = True
         if not first:
             tag = Tag(last_value,
                       last_fn,
@@ -236,9 +240,9 @@ for line in lines:
         first = True
         before = []
         i = idx - 1
-        while idx >= 0:
+        while i >= 0:
             if not re.match(empty_pattern, lines[i]):
-                before.append(lines[i][:-1])
+                before.append(lines[i])
             else:
                 break
             i -= 1
@@ -246,14 +250,14 @@ for line in lines:
 
         after = []
         i = idx + 1
-        while idx < len(lines):
+        while i < len(lines):
             if not re.match(empty_pattern, lines[i]):
-                after.append(lines[i][:-1])
+                after.append(lines[i])
             else:
                 break
             i += 1
 
-        contextlist = before + [lines[idx][:-1],] + after
+        contextlist = before + [lines[idx],] + after
         context = "\n".join(contextlist)
         value = match.group(1)
         tag = Tag(value,
@@ -274,6 +278,15 @@ for line in lines:
             in_info = False
 
     idx += 1
+
+if has_tags:
+    tag = Tag(last_value,
+              last_fn,
+              last_raw,
+              last_kind,
+              last_info)
+    if tags.has_key(last_kind):
+        tags[last_kind].append(tag)
 
 current_column = int(vim.eval("col(\".\")"))
 current_line = vim.eval("getline(\".\")")
@@ -302,7 +315,8 @@ vim.command("let res = []")
 for i in res:
     vim.command(("let tmp = {}"))
     for k, v in i.to_append().items():
-        vim.command("let tmp.%s = \"%s\"" % (k, v))
+        escv = v.replace("\"", "\\\"")
+        vim.command("let tmp.%s = \"%s\"" % (k, escv))
     vim.command("call add(res, tmp)")
 EOF
         return res

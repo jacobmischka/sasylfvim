@@ -79,7 +79,7 @@ nmap <f3> :call SASyLFComplete()<cr>
 ```
 
 ### Omnicompletion of Theorem / Rule / Lemma Names
-The file ftplugin/sasylf.vim also defines a omnicomplete function
+The file ftplugin/sasylf.vim also defines an omnicomplete function
 SASyLFComplete. Currently, it allows completing rule, lemma, and theorem names.
 By using CTRL-X CTRL-O (see `:he omnifunc`), names are suggested based on the
 previous word and the current word. For example, if we are inserting at the end

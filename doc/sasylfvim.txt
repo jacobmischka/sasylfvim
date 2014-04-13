@@ -1,0 +1,81 @@
+*sasylf.txt* Vim mode for the SASyLF proof assistant language
+
+==============================================================================
+Contents						*sasylf*
+
+	1. Introduction			|sasylf-intro|
+	2. Syntax Highlighting		|sasylf-syntax|
+	3. Inserting Missing Rules	|sasylf-rule-completion|
+	4. Omnicompletion		|sasylf-omni|
+
+==============================================================================
+1. Introduction						*sasylf-intro*
+
+The sasylf plugin offers various features for working with SASyLF proofs.
+Besides syntax highlighting, the plugin offers completion of
+rule/lemma/theorem names and is able to insert missing cases reported by the
+sasylf executable. The following sections describe these features in detail.
+
+==============================================================================
+2. Syntax Highlighting					*sasylf-syntax*
+
+Syntax highlighting can simply be enabled by setting 'filetype' to "sasylf".
+
+==============================================================================
+3. Inserting Missing Rules				*sasylf-rule-completion*
+
+The file ftplugin/sasylf.vim defines a function SASyLFComplete(), which
+inserts missing rules into a file. The function inserts only the missing rules
+that were reported for the line number matching the current line number. For
+example, consider the sasylf output of "sasylf --LF <a_file>":
+
+	sample.slf:51: must provide a case for 
+	rule gt-one
+	rule gt-more
+	--------------- gt-one
+	(s n1) > n1
+
+	n3 > n1
+	--------------- gt-more
+	(s n3) > n1
+
+
+	sample.slf: 1 error reported.
+
+Then, executing ":call SASyLFComplete()" while the cursor is on line 51
+results in inserting the cases
+
+	--------------- gt-one
+	_: (s n1) > n1
+
+	_: n3 > n1
+	--------------- gt-more
+	_: (s n3) > n1
+
+Obviously, executing ":call SASyLFComplete()" every time is tedious, so
+binding it to a key or key combination is probably a good idea. I am using the
+following line in "~/.vim/ftplugin/sasylf.vim":
+
+	nmap <f3> :call SASyLFComplete()<cr>
+
+==============================================================================
+4. Omnicompletion					*sasylf-omni*
+
+The file ftplugin/sasylf.vim also defines an omnicomplete function
+SASyLFComplete. Currently, it allows completing rule, lemma, and theorem
+names.  By using CTRL-X CTRL-O (see |omnifunc|), names are suggested based
+on the previous word and the current word. For example, if we are inserting at
+the end of the line
+
+	proof by rule gt-
+
+then the function first realizes that only rules should be considered for
+completion (as opposed to theorems and lemmas), and then proposes all rules
+that start with "gt-".
+
+In addition to proposing the names, the function also provides the rule,
+lemma, or theorem statement itself in the preview buffer. In order for the
+preview buffer to appear, one needs to set the corresponding completeopt value
+with ":set completeopt+=preview".
+
+ vim:tw=78:ts=8:ft=help:norl:
