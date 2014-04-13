@@ -195,7 +195,7 @@ lines = vim.current.buffer
 thm_pattern = re.compile("^(theorem)\s+(.+)\s*:.*$")
 lemma_pattern = re.compile("^(lemma)\s+(.+)\s*:.*$")
 rule_pattern = re.compile("^-+\s+([^\s]+).*$")
-info_end_pattern = re.compile("^.*\.\s+$")
+info_end_pattern = re.compile("^.*\.\s*$")
 empty_pattern = re.compile("^\s*$")
 
 last_value = ""
@@ -272,7 +272,7 @@ for line in lines:
         if in_info_first:
             in_info_first = False
         else:
-            last_info += re.sub("^\s+", "", line)
+            last_info += re.sub("^\s+", "", line) + "\n"
         match = re.match(info_end_pattern, line)
         if match:
             in_info = False
