@@ -242,7 +242,7 @@ for line in lines:
         i = idx - 1
         while i >= 0:
             if not re.match(empty_pattern, lines[i]):
-                before.append(lines[i][:-1])
+                before.append(lines[i])
             else:
                 break
             i -= 1
@@ -252,12 +252,12 @@ for line in lines:
         i = idx + 1
         while i < len(lines):
             if not re.match(empty_pattern, lines[i]):
-                after.append(lines[i][:-1])
+                after.append(lines[i])
             else:
                 break
             i += 1
 
-        contextlist = before + [lines[idx][:-1],] + after
+        contextlist = before + [lines[idx],] + after
         context = "\n".join(contextlist)
         value = match.group(1)
         tag = Tag(value,
