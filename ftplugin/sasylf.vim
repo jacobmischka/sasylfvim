@@ -315,7 +315,8 @@ vim.command("let res = []")
 for i in res:
     vim.command(("let tmp = {}"))
     for k, v in i.to_append().items():
-        vim.command("let tmp.%s = \"%s\"" % (k, v))
+        escv = v.replace("\"", "\\\"")
+        vim.command("let tmp.%s = \"%s\"" % (k, escv))
     vim.command("call add(res, tmp)")
 EOF
         return res
