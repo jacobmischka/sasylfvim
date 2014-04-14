@@ -19,15 +19,10 @@ Simply copy the contents of this repository (excluding README.md) to your vim
 configuration directory (usually ~/.vim/), though I using a plugin like
 pathogen [2] which makes it easier to handle multiple plugins.
 
-The plugin loads if a buffer's filetype is set to "sasylf". By default, vim
-does not set this when opening a \*.slf file. One can achieve this by putting
-the line
-
-```vim
-au BufNewFile,BufRead *.slf set filetype=sasylf
-```
-
-into the main vimrc file.
+The file `ftdetect/sasylf.vim` tells vim that whenever a file with the
+extension `slf` is opened, the filetype should be set to `sasylf`, which
+results in other files being loaded. One can manually set the current buffer to
+sasylf by entering `:set filetype=sasylf`.
 
 ## Usage
 The plugin offers various features, described below.
