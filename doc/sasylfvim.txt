@@ -19,7 +19,10 @@ sasylf executable. The following sections describe these features in detail.
 ==============================================================================
 2. Syntax Highlighting					*sasylf-syntax*
 
-Syntax highlighting can simply be enabled by setting 'filetype' to "sasylf".
+Syntax highlighting can simply be enabled by setting 'filetype' to "sasylf"
+(this happens automatically if a file with the extension .slf is opened, but
+can also be done by hand using
+	:set filetype=sasylf
 
 ==============================================================================
 3. Inserting Missing Rules				*sasylf-rule-completion*
