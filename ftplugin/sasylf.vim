@@ -206,7 +206,7 @@ last_info = ""
 first = True
 in_info = False
 
-tags = {"t": [], "l": [], "r": []}
+tags = {"theorem": [], "lemma": [], "rule": []}
 
 idx = 0
 has_tags = False
@@ -230,7 +230,7 @@ for line in lines:
         last_value = match.group(2)
         last_fn = "sample.slf"
         last_raw = ""
-        last_kind = match.group(1)[0]
+        last_kind = match.group(1)
         last_info = match.group(1) + " " + match.group(2) + ":\n"
         in_info = True
         in_info_first = True
@@ -263,10 +263,10 @@ for line in lines:
         tag = Tag(value,
                   last_fn,
                   "",
-                  "r",
+                  "rule",
                   context)
-        if tags.has_key("r"):
-            tags["r"].append(tag)
+        if tags.has_key("rule"):
+            tags["rule"].append(tag)
 
     if in_info:
         if in_info_first:
@@ -301,13 +301,12 @@ match = re.match(re.compile(".*\s+$"), head)
 if match:
     match = re.match(re.compile(".*(\W|^)(\w+)\s+$"), head)
     if match:
-        kind = match.group(2)[0]
+        kind = match.group(2)
 
 if tags.has_key(kind):
     for tag in tags[kind]:
         if tag.value.startswith(start):
             res.append(tag)
-            #res.append(tag.to_append())
 
 res.sort(lambda x, y: cmp(x.value, y.value))
 
