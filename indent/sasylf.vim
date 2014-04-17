@@ -43,6 +43,8 @@ function! GetSASyLFIndent()
 	" Now do all the cases where we need to un-indent.
 	if line =~ '^\s*\(lemma\|theorem\)\s\+.*:\s*$'
 		let ind = 0
+	elseif line =~ '\(lemma\|case analysis\|induction\|theorem\|case\).*\(lemma\|case analysis\|induction\|theorem\|case\)'
+		"let ind = ind + &sw
 	elseif line =~ 'end\( \(lemma\|case analysis\|induction\|theorem\|case\)\)\?$'
 		let ind = ind - &sw
 	elseif line =~ '^\s*is\s*$'
