@@ -69,7 +69,7 @@ def parse(text):
     single_rule_pattern = re.compile(".*must provide a case for rule (.*)$")
     single_case_pattern = re.compile(".*must provide a case for (.+)$")
     line_pattern = re.compile("^.*:(\d+):.*$")
-    final_pattern = re.compile("^.*warnings reported.$")
+    final_pattern = re.compile("^.*reported.$")
     desc_clause_pattern = re.compile("^DESCCLAUSE (.*)$")
     desc_rule_pattern = re.compile("^rule (.*)$")
     case_end_pattern = re.compile("^$")
