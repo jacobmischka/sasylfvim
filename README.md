@@ -32,6 +32,12 @@ Syntax highlighting can be enabled by using ```:syntax on``` and ```:set
 filetype=sasylf``` (the latter can be done automatically using the autocommand
 from above).
 
+Since the syntax highlighting script uses regions to match lemmas and
+theorems, one can use `:set foldmethod=syntax` to enable folding of lemmas and
+theorems. But since this method only supports one level of folding, it may be
+a better idea to just use `:set foldmethod=indent` when working with properly
+indented files.
+
 ### Inserting Missing Rules
 The file ftplugin/sasylf.vim defines a function SASyLFComplete(), which
 inserts missing rules into a file. The function inserts only the missing rules
