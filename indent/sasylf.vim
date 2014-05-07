@@ -7,7 +7,7 @@
 "let b:did_indent = 1
 
 setlocal indentexpr=GetSASyLFIndent()
-setlocal indentkeys=o,=end,=end.,=end\ ,=lemma,=analysis,=analysis\ ,=induction,=induction\ ,=is,=is.,=is\ ,=rule,=rule.,=rule\ ,=theorem,=theorem.,=theorem\ ,=case,=case.,=case\ ,<:>,=judgment
+setlocal indentkeys=o,=end,=end.,=end\ ,=lemma,=analysis,=analysis\ ,=induction,=induction\ ,=is,=is.,=is\ ,=rule,=rule.,=rule\ ,=theorem,=theorem.,=theorem\ ,=case,=case.,=case\ ,<:>,=judgment,=terminals
 setlocal comments=sr:/*,mb:*,ex:*/,://,b:#,:%,:XCOMM,n:>,fb:-
 
 function! GetSASyLFIndent()
@@ -40,6 +40,10 @@ function! GetSASyLFIndent()
 		let ind = ind + &sw
 	elseif getline(lnum-1) =~ '::='
 		let ind = ind + &sw
+	elseif getline(lnum-1) =~ '^\s*terminals'
+		let ind = ind + &sw
+	elseif line =~ '^\s*syntax\s*$'
+		let ind = 0
 	end
 
 	" Now do all the cases where we need to un-indent.
