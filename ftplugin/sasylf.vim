@@ -11,6 +11,9 @@ setlocal iskeyword=@,48-57,_,192-255,-
 " set errorformat to correctly parse the output (useful for quickfix)
 set errorformat=%f:%l:\ %m
 
+" set foldmethod to allow folding by the regions defined in syntax/sasylf.vim
+set foldmethod=syntax
+
 function! SASyLFComplete()
 let fixno=line(".")
 let theline=getline(".")
