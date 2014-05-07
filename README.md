@@ -102,6 +102,10 @@ included in comments at the end to show a simple way to generate tags for
 SASyLF (which can then be used  by vims tagging facilities, see `:he tags`,
 e.g. to jump to a definition using CTRL+]).
 
+## Contact
+If you have questions about or suggestions for this plugin, feel free to
+contact me at corrodi.claudio@gmail.com.
+
 ## References
 - [1] http://www.cs.cmu.edu/~aldrich/SASyLF/
 - [2] http://www.vim.org/scripts/script.php?script_id=2332
