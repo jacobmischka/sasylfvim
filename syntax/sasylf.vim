@@ -5,10 +5,6 @@ if exists("b:current_syntax")
 		finish
 endif
 
-map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
-\ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
-\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
-
 " Lemmas
 syn region Lemma start="^\s*lemma\s*.*:" end="end lemma" transparent fold keepend contains=ALL
 syn match LemmaDef contained /lemma/
@@ -16,7 +12,7 @@ hi def link LemmaDef Keyword
 syn match LemmaEnd contained /end lemma/
 hi def link LemmaEnd Keyword
 
-"" Theorems
+" Theorems
 syn region Theorem start="^\s*theorem\s*.*:" end="end theorem" transparent fold keepend contains=ALL
 syn match TheoremDef contained /theorem/
 hi def link TheoremDef Keyword
@@ -25,9 +21,9 @@ hi def link TheoremEnd Keyword
 
 " Cases
 syn region Case start="case rule" end="end case" transparent fold keepend contained contains=ALL
-syn match CaseStart containedin=Case /case rule/
+syn match CaseStart contained /case rule/
 hi def link CaseStart Keyword
-syn match CaseEnd containedin=Case /end case/
+syn match CaseEnd contained /end case/
 hi def link CaseEnd Keyword
 
 " Keywords
