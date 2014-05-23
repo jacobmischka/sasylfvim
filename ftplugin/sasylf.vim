@@ -45,6 +45,11 @@ class MissingCase(object):
         else:
             s += "case "
 
+        maxchar = 0
+        for line in self.case.split("\n"):
+            if not line.startswith("-"):
+                maxchar = max(maxchar, len(line))
+
         for line in self.case.split("\n"):
             if line == "":
                 continue
@@ -52,7 +57,10 @@ class MissingCase(object):
             if self.is_rule and not line.startswith("-") and not line == "":
                 line = "_: " + line
             if self.is_rule:
-                line = "\t" + line
+                if not line.startswith("-"):
+                    line = "\t" + line
+                else:
+                    line = "\t" + (re.sub("^-+", "-" * maxchar, line))
 
             #s += line + "\n"
             if self.is_rule:
@@ -70,10 +78,11 @@ def parse(text):
     lines = text.split("\n")
 
     single_rule_pattern = re.compile(".*must provide a case for rule (.*)$")
-    single_case_pattern = re.compile(".*must provide a case for (.+)$")
+    #single_case_pattern = re.compile(".*must provide a case for (.+)$")
     line_pattern = re.compile("^.*:(\d+):.*$")
     final_pattern = re.compile("^.*reported.$")
     desc_clause_pattern = re.compile("^DESCCLAUSE (.*)$")
+    desc_rule_or_pattern = re.compile("^rule or.*$")
     desc_rule_pattern = re.compile("^rule (.*)$")
     case_end_pattern = re.compile("^$")
 
@@ -97,13 +106,16 @@ def parse(text):
                 is_rule = True
             else:
                 is_rule = False
-
             continue
 
         match = re.match(desc_rule_pattern, line)
         if match:
-            is_rule = True
-            continue
+            match = re.match(desc_rule_or_pattern, line)
+            if match:
+                is_rule = False
+            else:
+                is_rule = True
+                continue
 
         match = re.match(case_end_pattern, line)
         if match:
