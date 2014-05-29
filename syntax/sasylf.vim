@@ -19,26 +19,19 @@ hi def link TheoremDef Keyword
 syn match TheoremEnd contained /end theorem/
 hi def link TheoremEnd Keyword
 
-" Cases
-syn region Case start="case rule" end="end case" transparent fold keepend contained contains=ALL
-syn match CaseStart contained /case rule/
-hi def link CaseStart Keyword
-syn match CaseEnd contained /end case/
-hi def link CaseEnd Keyword
-
 " Keywords
-syn keyword SASyLFKeyword terminals syntax judgment assumes induction analysis hypothesis is unproved proof solve and or
+syn keyword SASyLFKeyword terminals syntax judgment assumes induction analysis hypothesis is unproved proof solve and or rule case end
 syn keyword SASyLFConditional forall exists by on
 
 hi def link SASyLFKeyword Keyword
 hi def link SASyLFConditional Conditional
 
 " Labels
-syn match SASyLFLabel /\S\+\s*:/
-hi def link SASyLFLabel Identifier
+"syn match SASyLFLabel /\S\+\s*:/
+"hi def link SASyLFLabel Identifier
 
 " Rules
-syn match Bar /\-\-\-\-.*$/
+syn match Bar /\(\-\|─\|―\)\{3,\}.*$/
 hi def link Bar Special
 
 " Comments
